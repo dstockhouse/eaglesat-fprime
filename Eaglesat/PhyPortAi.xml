@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<?oxygen RNGSchema="file:../xml/ISF_Type_Schema.rnc" type="compact"?>
+
+<interface name="PhyPort" namespace="Drv">
+<comment>Interface between Mgr and Drv</comment>
+
+  <import_serializable_type>Fw/Buffer/BufferSerializableAi.xml</import_serializable_type>
+
+  <args>
+
+    <arg name="Address" type="U32" pass_by="value">
+      <comment>May not be required for some simpler interfaces (i.e. UART)</comment>
+    </arg>
+
+    <arg name="Buffer" type="Fw::Buffer" pass_by="reference">
+    </arg>
+
+  </args>
+
+</interface>

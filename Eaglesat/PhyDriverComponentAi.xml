@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../Autocoders/Python/schema/ISF/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+
+<component name="PhyDriver" kind="passive" namespace="Drv" modeler="true">
+
+    <import_port_type>Drv/PhyPort/PhyPortAi.xml</import_port_type>
+
+    <ports>
+
+        <port name="Write" data_type="Drv::PhyPort" kind="guarded_input" max_number="1">
+        </port>
+
+        <port name="Read" data_type="Drv::PhyPort" kind="output" max_number="1">
+        </port>
+
+    </ports>
+
+    <comment>
+        Add events, TLM for buffer overflow, missed data, etc
+    </comment>
+
+</component> 

@@ -82,7 +82,7 @@ result = (value1 operation value2)*factor1/factor2
 
 The implementation of the component will will have the following steps:
 
-1) Define the `MathOpPort` and 'MathResultPort' ports that are used between the components.
+1) Define the `MathOpPort` and `MathResultPort` ports that are used between the components.
 2) Define the `MathSender` component in XML and compile it.
 3) Implement the `MathSender` derived implementation class. 
 4) Unit test the `MathSender` implementation component.
@@ -280,7 +280,7 @@ The code generated to implement ports is complete. Developers do not need to add
 
 ## 2.2 Serializable Definition
 
-A structure needs to be defined that represents the channel value needed by `MathReceiver`. All port calls, telemetry channels, events and parameters need to be comprised of `Serializable` values, or values that can be turned into a byte stream. This is needed to pass port arguments through message queues and to pass commands and telemetry to and from the ground system. Built-in basic types like integers, floating point numbers and boolean values are supported by the framework, but there are times when a developer wishes to use a custom-defined type, perhaps to keep members of a object consistent with each other. These structures can be defined in XML and the code generator will generate the C++ classes with all the neccessary serialization functions. Developers can hand-code their own, but they are not usable for telemetry since the ground sysmtem needs an XML definition to decode them.
+A structure needs to be defined that represents the channel value needed by `MathReceiver`. All port calls, telemetry channels, events and parameters need to be comprised of `Serializable` values, or values that can be turned into a byte stream. This is needed to pass port arguments through message queues and to pass commands and telemetry to and from the ground system. Built-in basic types like integers, floating point numbers and boolean values are supported by the framework, but there are times when a developer wishes to use a custom-defined type, perhaps to keep members of a object consistent with each other. These structures can be defined in XML and the code generator will generate the C++ classes with all the neccessary serialization functions. Developers can hand-code their own, but they are not usable for telemetry since the ground system needs an XML definition to decode them.
 
 ### 2.2.1 MathOp
 
@@ -805,7 +805,7 @@ The `MathReceiver` component XML is as follows:
 The mod.mk file for this component is as follows:
 
 ```make
-SRC = 	MathSenderComponentAi.xml 
+SRC = 	MathReceiverComponentAi.xml 
 ```
 
 
@@ -1728,7 +1728,7 @@ This unit test demonstrates how event throttling works. The event is repeatedly 
 
 Now that the two components are defined, implemented and unit tested they can to be added to the `Ref` topology. 
 The topology describes the interconnection of all the components so the system operates as intended. 
-They consist of the core Command and Data Handling (C&DH) components that are part of the reusable set of components that come with the F` repository as well as custom components written for the `Ref` reference example including the ones in this tutorial. 
+They consist of the core Command and Data Handling (C&DH) components that are part of the reusable set of components that come with the F' repository as well as custom components written for the `Ref` reference example including the ones in this tutorial. 
 The `Ref` topology has already been developed as an example. 
 The tutorial will add the `MathSender` and `MathReceiver` components to the existing demonstration. 
 It involves modification of a topology description XML file as well as accompanying C++ code to instantiate and initialize the components.

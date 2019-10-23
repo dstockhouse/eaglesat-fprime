@@ -95,7 +95,7 @@ to communicate with other components as well as references to the dictonaries th
 of components, ports, events, telemetry, and commands can be found in the F' user guide. [User Guide](docs/UsersGuide/FprimeUserGuide.pdf). *Side note:* 
 Ports are also defined with XML, however; this application does not need any customized ports and thus we need not elaborate here.
 
-The first step to making a compnent is to make a project directory to hold our project's components, and a component directory for our GPS. This is do
+The first step to making a compnent is to make a project directory to hold our project's components, and a component directory for our GPS. This is done
 as follows:
 
 ```

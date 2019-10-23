@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="../../Autocoders/Python/schema/ISF/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+
+<component name="EpsMgr" kind="passive" namespace="Es" modeler="true">
+
+    <import_port_type>Drv/PhyPort/PhyPortAi.xml</import_port_type>
+
+    <ports>
+        <port name="I2CWrite" data_type="Drv::PhyPort" kind="output" max_number="1">
+        </port>
+
+        <port name="I2CRead" data_type="Drv::PhyPort" kind="async_input" max_number="1">
+        </port>
+
+        <comment>
+            Add port for communication to state mgr
+        </comment>
+    </ports>
+
+    <comment>
+        Get EPS diagnostic
+         * Relates to EPS HW supported commands
+         * Ex. get voltage on bus 1
+        
+        Supported commands for EPS:
+         * Manual reset
+         * WDT configuration/control
+         * Power distribution switching
+          - Set/get current state
+          - Set/get default state
+         * Reset power bus (turn off for 500ms)
+        Supported information from EPS:
+         * Board status
+          - Additional error-related codes subject to future availability
+          - ROM firmware checksum, version (?)
+         * Power levels
+          - Multiple voltage supplies
+          - Multiple current supplies
+          - Power consumption of the EPS
+          - Solar panel info
+         * Board temperature
+    </comment>
+
+    <comment>
+        A note about states
+        Include a state mgr component that has a record of state,
+        Gets information from all other mgrs
+        State transition logic based on system information
+        Input port to read state used by all mgrs
+    </comment>
+
+    <commands>
+        <comment>
+            Things someone else can tell EpsMgr to do
+
+             * Manual reset
+             * Modify voltage threshold events (maybe, TBD)
+              - May also be in the purview of the State Mgr
+             * Modify default state operations (TBD)
+              - When Eps starts up or operates normally, it has to know who should be on, who should be monitored
+              - For example, at boot EpsMgr turns on/off certain things. What are those things?
+        </comment>
+
+        <command kind="async" opcode="0" mnemonic="EPS_RESET">
+            <comment>
+                Resets everything the EpsMgr has control over
+            </comment>
+        </command>
+
+        <command kind="async" opcode="1" mnemonic="EPS_TO_BE_DECIDED_STATE_STUFF">
+            <comment>
+                Stuff relating to default state operations
+            </comment>
+        </command>
+
+    </commands>
+
+
+    <telemetry>
+        <channel id="0" name="VoltageBatt" data_type="F32" abbrev="E000-0000" format_string="VBatt rail is %0.3f">
+            <comment>
+                Bus voltage for VBatt rail
+            </comment>
+        </channel>
+        <channel id="1" name="Voltage12" data_type="F32" abbrev="E000-0001" format_string="12V rail is %0.3f">
+            <comment>
+                Bus voltage for 12V rail
+            </comment>
+        </channel>
+        <channel id="2" name="Voltage5" data_type="F32" abbrev="E000-0002" format_string="5V rail is %0.3f">
+            <comment>
+                Bus voltage for 5V rail
+            </comment>
+        </channel>
+        <channel id="3" name="Voltage33" data_type="F32" abbrev="E000-0003" format_string="3V3 rail is %0.3f">
+            <comment>
+                Bus voltage for 3V3 rail
+            </comment>
+        </channel>
+        <channel id="0" name="CurrentBatt" data_type="F32" abbrev="E000-0000" format_string="VBatt rail is %0.3f">
+            <comment>
+                Bus Current for VBatt rail
+            </comment>
+        </channel>
+        <channel id="1" name="Current12" data_type="F32" abbrev="E000-0001" format_string="12V rail is %0.3f">
+            <comment>
+                Bus voltage for 12V rail
+            </comment>
+        </channel>
+        <channel id="2" name="Current5" data_type="F32" abbrev="E000-0002" format_string="5V rail is %0.3f">
+            <comment>
+                Bus voltage for 5V rail
+            </comment>
+        </channel>
+        <channel id="3" name="Current33" data_type="F32" abbrev="E000-0003" format_string="3V3 rail is %0.3f">
+            <comment>
+                Bus voltage for 3V3 rail
+            </comment>
+        </channel>
+        <comment>
+        UPDATE THE STUFF ABOVE
+        </comment>
+        <channel id="8" name="EpsTemp" data_type="F32" abbrev="E000-0008" format_string="EPS Temperature is %0.3f">
+            <comment>
+                Temperature for EPS motherboard
+            </comment>
+        </channel>
+        <channel id="8" name="SolarPanelStuffTBD" data_type="F32" abbrev="E000-0008" format_string="EPS Temperature is %0.3f">
+            <comment>
+                TBD how much telemetry is related to solar panels
+            </comment>
+        </channel>
+    </telemetry>
+
+
+    <events>
+        <event id="0" name="LowVoltage5" severity="WARNING_HI" format_string = "First packet ID %d received">
+            <comment>
+                Also put these for all other voltage rails
+            </comment>
+            <args>
+                <arg name="voltage" type="F32">
+                    <comment>The ID argument</comment>
+                </arg>
+            </args>
+        </event>
+        <event id="1" name="HighCurrent5" severity="WARNING_HI" format_string = "First packet ID %d received">
+            <comment>
+                Also put these for all other current rails, maybe also temperature threshold trigger
+            </comment>
+            <args>
+                <arg name="current" type="F32">
+                    <comment>The ID argument</comment>
+                </arg>
+            </args>
+        </event>
+        <event id="2" name="EpsBadStatus" severity="WARNING_HI" format_string = "First packet ID %d received">
+            <comment>
+                Status returned by EPS, if actually bad
+            </comment>
+            <args>
+                <arg name="current" type="F32">
+                    <comment>The ID argument</comment>
+                </arg>
+            </args>
+        </event>
+        <event id="1" name="PacketErrorInserted" severity="WARNING_HI" format_string = "Inserted error in packet ID %d">
+            <comment>
+            Packet checksum error
+            </comment>
+            <args>
+                <arg name="id" type="U32">
+                    <comment>The ID argument</comment>
+                </arg>
+            </args>
+        </event>
+        <event id="2" name="BuffSendParameterUpdated" severity="ACTIVITY_LO" format_string = "BuffSend Parameter %d was updated">
+            <comment>
+            Report parameter update
+            </comment>
+            <args>
+                <arg name="id" type="U32">
+                    <comment>The ID argument</comment>
+                </arg>
+            </args>
+        </event>
+        <event id="3" name="SendBuffFatal" severity="FATAL" format_string = "Test Fatal: %d %d %d">
+            <comment>
+            A test FATAL
+            </comment>
+            <args>
+                <arg name="arg1" type="U32">
+                    <comment>First FATAL argument</comment>
+                </arg>
+                <arg name="arg2" type="U32">
+                    <comment>Second FATAL argument</comment>
+                </arg>
+                <arg name="arg3" type="U32">
+                    <comment>Second FATAL argument</comment>
+                </arg>
+            </args>
+        </event>
+    </events>
+
+
+    <parameters>
+        <parameter id="0" set_opcode="10" save_opcode="11" name="parameter3" data_type="U8" default="12">
+            <comment>
+                Voltage threshold for warning trigger event
+                Also include for current, temperature
+            </comment>
+        </parameter>
+    </parameters>
+
+
+</component> 
+
