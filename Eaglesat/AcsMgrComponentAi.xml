@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+
+<component name="AcsMgr" kind="passive" namespace="Ac" modeler="true">
+
+    <import_port_type>Drv/PhyPort/PhyPortAi.xml</import_port_type>
+
+    <ports>
+        <port name="CANWrite" data_type="Drv::PhyPort" kind="output" max_number="1">
+        </port>
+
+        <port name="CANRead" data_type="Drv::PhyPort" kind="guarded_input" max_number="1">
+        </port>
+
+	<comment>
+		Finish here!
+	</comment>
+        <port name="AttRead" data_type="Acs::Attitude" kind="guarded_input" max_number="1">
+        </port>
+    </ports>
+    
+
+    <comment>
+    </comment>
+    
+
+    <commands>
+        <command kind="async" opcode ="0" mnemonic="ACS_RESET">
+            <comment>
+                Performs a reset of ACS  ID: 1
+                -length 1 byte
+                -Magic number to make sure its a valid reset command
+                -Should equal 0x5A
+            </comment>
+        </command>
+
+
+        <command kind ="async" opcode="1" mnemonic="CLR_ERRORS">
+            <comment>
+                Clear Errors  ID: 12
+                -length 1 byte
+                Clear ADCS Error Flags
+                    -Offset 0 bits
+                    -length 1 bit
+                Clear HK Error Flags
+                    -Offset 1 bit
+                    -length 1 bit
+            </comment>
+            
+        </command>
+        
+        <command kind = "async" opcode="2" mnemonic="CMD_ATTITUDE_ANGLES">
+            <comment>
+                Commanded attitude angles  ID: 15
+                -Data type INT
+                -length 6 bytes
+                Commanded Roll Angle
+                    -Offset 0 bits
+                    -length 16 bits
+                Commanded Pitch Angle
+                    -Offset 16 bits
+                    -length 16 bits
+                Commanded Yaw Angle
+                    -Offset 32 bits
+                    -length 16 bits
+
+                Raw Parameter: (raw parameter) = (formatted Value) * 100.0      (formatted value is in [deg] units)
+            </comment>
+        </command>
+        
+        
+    </commands>
+
+    <telemery>
+        <channel id="0" name="EstAttitudeAngle" data_type="S32" abbrev="E000-0000" format_string="Estimated Attitude Angles are \n Roll: %0.3f\n  Pitch: %0.3f\n Yaw: %0.3f">
+            <comment>
+                Estimated attitude angles
+                    -Data type INT
+                    -length 6 bytes
+                    Estimated Roll Angle
+                        -Offset 0 bits
+                        -length 16 bits
+                    Estimated Pitch Angle
+                        -Offset 16 bits
+                        -length 16 bits
+                    Estimated Yaw Angle
+                        -Offset 32 bits
+                        -length 16 bits
+                        
+                Formatted Value: (formatted value)[deg] = RAWVAL*0.01
+            </comment>
+        </channel>
+
+        <channel id="1" name="CurCOMMState" data_type="U48" abbrev="E000-0001" format_string="Number of telecommands received: %u \n 
+                                                                                              Number of telemetry requests received: %u">
+            <comment>
+                Communtication Status Telemetry
+                length 6 bytes
+                
+                Telecommand counter
+                    -Data type: UINT
+                    -Offset 0 bits
+                    -length 16 bits
+                Telemetry request counter
+                    -Data type: UINT
+                    -Offset 16 bits
+                    -length 16 bits
+                Telecommand buffer overrun
+                -TC buffer was overrun while receiving a telecommand
+                    -Offset 32 bits
+                    -boolean
+                CAN Telecommand buffer error
+                -Telecommand sent exceeds buffer size
+                    -Offset 37 bits
+                    -boolean
+                
+            </comment>
+        </channel>
+        
+        
+    </telemery>
+    
+    
+    
+    
+</component>
