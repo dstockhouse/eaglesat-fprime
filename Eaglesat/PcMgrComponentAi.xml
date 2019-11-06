@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<comment>
+Namespace Es is short for Eaglesat
+</comment>
+
+<component name="PcMgr" kind="active" namespace="Es" modeler="true">
+
+    <import_port_type>Drv/PhyPort/PhyPortAi.xml</import_port_type>
+
+    <ports>
+        <port name="CANWrite" data_type="Drv::PhyPort" kind="output" max_number="1">
+        </port>
+
+        <port name="CANRead" data_type="Drv::PhyPort" kind="guarded_input" max_number="1">
+        </port>
+
+        <comment>
+            Finish here!
+        </comment>
+
+        <port name="AttRead" data_type="Acs::Attitude" kind="output" max_number="1">
+        </port>
+
+        <port name="PcStatus" data_type="Pc::Status" kind="output" max_number="1">
+        </port>
+
+        <port name="ObcState" data_type="Obc::State" kind="output" max_number="1">
+        </port>
+    </ports>
+
+
+    <comment>
+    </comment>
+    
+
+    <commands>
+        <command kind="async" opcode ="0" mnemonic="PS_RESET">
+            <comment>
+                Performs a reset of ACS  ID: 1
+                -length 1 byte
+                -Magic number to make sure its a valid reset command
+                -Should equal 0x5A
+            </comment>
+        </command>
+
+
+        <command kind ="async" opcode="1" mnemonic="CLR_ERRORS">
+            <comment>
+                Clear Errors  ID: 12
+                -length 1 byte
+                Clear ADCS Error Flags
+                    -Offset 0 bits
+                    -length 1 bit
+                Clear HK Error Flags
+                    -Offset 1 bit
+                    -length 1 bit
+            </comment>
+            
+        </command>
+        
+        
+    </commands>
+
+    <telemery>
+        <channel id="0" name="PcStatus" data_type="U32" abbrev="E000-0000" format_string="PC Status is %02x">
+            <comment>
+            Payload computer status.
+            0x00 - Good
+            Picture overflow - 9 ID bits indicate picture index
+                0x10 - 75% full
+                0x11 - 85% full
+                0x12 - 90% full
+                0x13 - 95% full
+            Memory overflow - 512 kB of memory
+                0x24 - 75% full
+                0x25 - 85% full
+                0x26 - 90% full
+                0x27 - 95% full
+            Mode - What mode the PcMgr is in, hopefully the same as system mode
+                0x80 - Normal mode
+                0xC0 - Safe mode
+                0x40 - Detumble mode
+            </comment>
+        </channel>
+        <channel id="1" name="CrpDataCollected" data_type="U32" abbrev="E000-0001" format_string="%d CRP data points received">
+            <comment>
+            Number of data points received by CRP
+            </comment>
+        </channel>
+        <channel id="2" name="MdeDataCollected" data_type="U32" abbrev="E000-0002" format_string="%d MDE data points received">
+            <comment>
+            Number of data points received by MDE
+            </comment>
+        </channel>
+    </telemery>
+    
+    
+    
+    
+</component>

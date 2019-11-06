@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-model href="../../Autocoders/Python/schema/ISF/component_schema.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
 
-<component name="EpsMgr" kind="passive" namespace="Es" modeler="true">
+<component name="EpsMgr" kind="active" namespace="Es" modeler="true">
 
     <import_port_type>Drv/PhyPort/PhyPortAi.xml</import_port_type>
 
