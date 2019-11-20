@@ -1,73 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <comment>
-Namespace Es is short for Eaglesat
+  Namespace Es is short for Eaglesat
 </comment>
 
-<component name="AcsMgr" kind="active" namespace="Es" modeler="true">
+<component name="StateMgr" kind="active" namespace="Es" modeler="true">
 
-    <ports>
+  <ports>
 
-        <comment>
-        Where everyone else gives their specific state to the OBC manager
-        </comment>
+    <comment>
+      Where everyone else gives their specific state to the OBC manager
+    </comment>
 
-        <port name="AcsStatus" data_type="Acs::Status" kind="guarded_input" max_number="1">
-        </port>
+    <port name="AcsStatus" data_type="Acs::Status" kind="guarded_input" max_number="1">
+    </port>
 
-        <port name="EpsStatus" data_type="Eps::Status" kind="guarded_input" max_number="1">
-        </port>
+    <port name="EpsStatus" data_type="Eps::Status" kind="guarded_input" max_number="1">
+    </port>
 
-        <port name="GpsStatus" data_type="Gps::Status" kind="guarded_input" max_number="1">
-        </port>
+    <port name="GpsStatus" data_type="Gps::Status" kind="guarded_input" max_number="1">
+    </port>
 
-        <port name="PcStatus" data_type="Pc::Status" kind="guarded_input" max_number="1">
-        </port>
+    <port name="PcStatus" data_type="Pc::Status" kind="guarded_input" max_number="1">
+    </port>
 
-        <comment>
-        Where everyone else polls the system state
-        </comment>
-        <port name="ObcState" data_type="Obc::State" kind="input" max_number="1">
-        </port>
-    </ports>
+    <comment>
+      Where everyone else polls the system state
+    </comment>
+    <port name="ObcState" data_type="Obc::State" kind="input" max_number="1">
+    </port>
+  </ports>
 
 
-    <commands>
-        <command kind="async" opcode ="0" mnemonic="OBC_RESET">
-            <comment>
-            Software reset of OBC
-            </comment>
-        </command>
+  <commands>
+    <command kind="async" opcode ="0" mnemonic="OBC_RESET">
+      <comment>
+        Software reset of OBC
+      </comment>
+    </command>
 
-        <command kind ="async" opcode="1" mnemonic="OBC_CHANGE_MODE">
-            <comment>
-            Comes from the ground
-            Required to move from safe to normal mode
-            Other supported transitions are possible but not common/recommended
-            </comment>
-            <arg type="ENUM" name="newState">
-                <enum name="ObcState">
-                    <item name="NOMINAL"></item>
-                    <item name="SAFE"></item>
-                    <item name="DETUMBLE"></item>
-                </enum>
-            </arg>
-        </command>
-    </commands>
+    <command kind ="async" opcode="1" mnemonic="OBC_CHANGE_MODE">
+      <comment>
+        Comes from the ground
+        Required to move from safe to normal mode
+        Other supported transitions are possible but not common/recommended
+      </comment>
+      <arg type="ENUM" name="newState">
+        <enum name="ObcState">
+          <item name="NOMINAL"></item>
+          <item name="SAFE"></item>
+          <item name="DETUMBLE"></item>
+        </enum>
+      </arg>
+    </command>
 
-    <events>
-        <comment>
-        Events reported whenever a state transition occurs
-        </comment>
-        <event id="0" name="NominalMode" severity="ACTIVITY_HI" format_string = "OBC is now in nominal mode">
-        </event>
-        <event id="1" name="DetumbleMode" severity="WARNING_HI" format_string = "OBC is now in detumble mode">
-        </event>
-        <event id="2" name="SafeModeFromNominal" severity="WARNING_HI" format_string = "OBC is now in safe mode from nominal">
-        </event>
-        <event id="3" name="SafeModeFromDetumble" severity="WARNING_LO" format_string = "OBC is now in safe mode from detumble">
-        </event>
-    </events>
-    
+    <command kind ="async" opcode="1" mnemonic="OBC_REQUEST_MODE">
+      <comment>
+        Send Mode to ground
+      </comment>
+      <arg type="ENUM" name="newState">
+        <enum name="ObcState">
+          <item name="NOMINAL"></item>
+          <item name="SAFE"></item>
+          <item name="DETUMBLE"></item>
+        </enum>
+      </arg>
+    </command>
+  </commands>
+
+  <events>
+    <comment>
+      Events reported whenever a state transition occurs
+    </comment>
+    <event id="0" name="NominalMode" severity="ACTIVITY_HI" format_string = "OBC is now in nominal mode">
+    </event>
+    <event id="1" name="DetumbleMode" severity="WARNING_HI" format_string = "OBC is now in detumble mode">
+    </event>
+    <event id="2" name="SafeModeFromNominal" severity="WARNING_HI" format_string = "OBC is now in safe mode from nominal">
+    </event>
+    <event id="3" name="SafeModeFromDetumble" severity="WARNING_LO" format_string = "OBC is now in safe mode from detumble">
+    </event>
+  </events>
+
 </component>
-
