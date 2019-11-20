@@ -35,7 +35,7 @@
 
 
   <commands>
-    <command kind="async" opcode ="0" mnemonic="PS_RESET">
+    <command kind="async" opcode ="0" mnemonic="PC_RESET">
       <comment>
         // To PC Manager
         Read_CRP -- Get CRP science/data
@@ -85,7 +85,7 @@
         0x25 - 85% full
         0x26 - 90% full
         0x27 - 95% full
-        Payload Status
+        Payload Status (masks)
         0xF0000000 - Temp Sensor Error State
         0x0F000000 - CRP Error State
         0x00F00000 - MDE Error State
